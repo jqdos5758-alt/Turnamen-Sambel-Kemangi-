@@ -5,11 +5,11 @@
   "display": "standalone",
   "background_color": "#1a1a1a",
   "theme_color": "#c62828",
-  "description": "Sistem Turnamen Catur Swiss & Gugur - Pedas, Segar, Adil!",
+  "description": "Sistem Turnamen Catur Swiss & Gugur",
   "icons": [
     {
       "src": "logo.jpg",
-      "sizes": "512x512",
+      "sizes": "any",
       "type": "image/jpeg",
       "purpose": "any maskable"
     }
