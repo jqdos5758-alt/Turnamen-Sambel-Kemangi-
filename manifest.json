@@ -1,0 +1,17 @@
+{
+  "name": "Turnamen Sambel Kemangi",
+  "short_name": "Sambel Kemangi",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff8e1",
+  "theme_color": "#c62828",
+  "description": "Sistem Turnamen Catur Swiss - Pedas, Segar, Adil!",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3306/3306075.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
