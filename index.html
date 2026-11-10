@@ -5,224 +5,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍅 Turnamen Sambel Kemangi 🌿</title>
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#c62828">
-<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#c62828">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <style>
         :root {
-            --merah: #c62828;
-            --merah-gelap: #8e0000;
+            --merah: #e53935;
+            --merah-gelap: #b71c1c;
             --hijau: #2e7d32;
             --hijau-muda: #e8f5e9;
             --krem: #fff8e1;
+            --bg: #f4f7f6;
+            --teks: #333;
+            --teks-muda: #666;
         }
-        * { box-sizing: border-box; }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 15px;
-            background: linear-gradient(135deg, #fff8e1 0%, #ffebee 100%);
-            color: #333;
-            min-height: 100vh;
+            margin: 0; padding: 0; background-color: var(--bg); color: var(--teks);
+            min-height: 100vh; display: flex; flex-direction: column;
         }
-        header {
-            text-align: center;
-            padding: 20px 10px;
+
+        /* --- SPLASH SCREEN ANIMASI --- */
+        #splash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, var(--merah) 0%, var(--merah-gelap) 100%);
-            color: white;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(198,40,40,0.3);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.5s ease; color: white;
         }
-        header h1 {
-            margin: 0;
-            font-size: 1.8em;
-            letter-spacing: 1px;
+        .loader-catur {
+            font-size: 60px; animation: bounce 1s infinite alternate; margin-bottom: 20px;
         }
-        header p {
-            margin: 5px 0 0;
-            font-size: 0.95em;
-            opacity: 0.95;
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+        
+        /* --- HEADER --- */
+        header {
+            text-align: center; padding: 25px 15px;
+            background: linear-gradient(135deg, var(--merah) 0%, var(--merah-gelap) 100%);
+            color: white; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(229,57,53,0.3); margin-bottom: 20px;
         }
+        header h1 { margin: 0; font-size: 1.6em; letter-spacing: 1px; }
+        header p { margin: 8px 0 0; font-size: 0.9em; opacity: 0.9; font-weight: 300; }
+
+        /* --- KARTU & LAYOUT --- */
+        .container { max-width: 800px; margin: 0 auto; padding: 0 15px; width: 100%; flex: 1; }
         .card {
-            background: white;
-            padding: 18px;
-            border-radius: 10px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-top: 4px solid var(--merah);
+            background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--merah);
+            transition: transform 0.2s ease;
         }
-        .card h2 {
-            margin-top: 0;
-            color: var(--merah-gelap);
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .card h2 { margin-top: 0; color: var(--merah-gelap); font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
+
+        /* --- FORM & TOMBOL --- */
+        input, select {
+            padding: 12px; margin: 5px 0; font-size: 15px; border-radius: 8px;
+            border: 1px solid #ddd; width: 100%; transition: border 0.3s;
         }
-        input, select, button {
-            padding: 9px;
-            margin: 4px;
-            font-size: 15px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-        input:focus, select:focus { outline: 2px solid var(--merah); border-color: transparent; }
+        input:focus, select:focus { outline: none; border-color: var(--merah); box-shadow: 0 0 5px rgba(229,57,53,0.2); }
+        
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
         button {
-            background: var(--merah);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            padding: 12px 20px; font-size: 15px; border-radius: 8px; border: none;
+            cursor: pointer; font-weight: 600; transition: all 0.2s ease; flex: 1; min-width: 120px;
         }
-        button:hover:not(:disabled) { background: var(--merah-gelap); }
-        button:disabled { background: #ccc; cursor: not-allowed; }
-        button.hijau { background: var(--hijau); }
-        button.hijau:hover:not(:disabled) { background: #1b5e20; }
-        button.kecil { padding: 5px 10px; font-size: 13px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 15px; }
-        th, td { padding: 9px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: var(--hijau-muda); color: var(--hijau); font-weight: 700; }
-        tr:hover td { background: #fafafa; }
+        button:active { transform: scale(0.97); }
+        .btn-primary { background: var(--merah); color: white; box-shadow: 0 4px 6px rgba(229,57,53,0.2); }
+        .btn-primary:hover { background: var(--merah-gelap); }
+        .btn-success { background: var(--hijau); color: white; box-shadow: 0 4px 6px rgba(46,125,50,0.2); }
+        .btn-success:hover { background: #1b5e20; }
+        .btn-outline { background: transparent; border: 2px solid var(--merah); color: var(--merah); }
+        .btn-outline:hover { background: var(--merah); color: white; }
+        .btn-print { background: #37474f; color: white; width: 100%; margin-bottom: 15px; border-radius: 8px; border: none; padding: 12px; font-weight: bold; cursor: pointer; }
+        .btn-print:hover { background: #263238; }
+
+        /* --- DAFTAR PEMAIN --- */
+        ul#playerList { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        ul#playerList li { background: var(--hijau-muda); padding: 10px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+        ul#playerList li button { background: transparent; color: var(--merah); padding: 0 5px; min-width: auto; font-size: 16px; box-shadow: none; }
+        
+        /* --- PAIRING --- */
         .pairing-row {
-            background: #fafafa;
-            padding: 12px;
-            margin: 6px 0;
-            border-left: 5px solid var(--merah);
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
+            background: var(--krem); padding: 15px; margin-bottom: 10px; border-left: 5px solid var(--merah);
+            border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
         }
         .pairing-row.bye { border-left-color: var(--hijau); background: var(--hijau-muda); }
-        .status-msg { color: #777; font-style: italic; font-size: 0.9em; }
-        .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-        ul#playerList {
-            list-style: none; padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 6px;
+        .vs { color: var(--merah); font-weight: bold; margin: 0 10px; }
+        .result-input { width: 180px; padding: 8px; }
+
+        /* --- TABEL KLASEMEN --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 10px; overflow: hidden; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: var(--hijau); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #fafafa; }
+        tr:hover td { background: #f0f7f0; }
+
+        .footer { text-align: center; color: var(--teks-muda); font-size: 12px; padding: 20px; margin-top: auto; }
+
+        /* --- MODE CETAK (PDF / JPG) --- */
+        @media print {
+            body { background: white; color: black; }
+            header { background: none; color: black; border-radius: 0; box-shadow: none; border-bottom: 2px solid black; padding-bottom: 10px; }
+            .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .btn-group, #setupArea, #playerArea, .footer, #btnPair, #btnSaveResults, .btn-print { display: none !important; }
+            table { border: 1px solid black; }
+            th { background: #eee !important; color: black !important; }
+            th, td { border-bottom: 1px solid #000; }
         }
-        ul#playerList li {
-            background: var(--hijau-muda);
-            padding: 6px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        ul#playerList li button {
-            background: #e57373; padding: 2px 8px; font-size: 12px; margin: 0;
-        }
-        .badge {
-            display: inline-block;
-            background: var(--hijau);
-            color: white;
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: normal;
-        }
-        .footer {
-            text-align: center;
-            color: #999;
-            font-size: 12px;
-            margin-top: 20px;
-            padding: 10px;
-        }
-        .result-input { width: 170px; }
     </style>
 </head>
 <body>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash">
+        <div class="loader-catur">♞</div>
+        <h2>Menyiapkan Papan...</h2>
+    </div>
 
     <header>
         <h1>🍅 Turnamen Sambel Kemangi 🌿</h1>
         <p>Sistem Turnamen Catur Swiss — Pedas, Segar, Adil!</p>
     </header>
 
-    <!-- SETUP -->
-    <div class="card" id="setupArea">
-        <h2>⚙️ Pengaturan Turnamen</h2>
-        <label>Total Babak:
-            <input type="number" id="totalRounds" value="5" min="1" max="11" style="width: 70px;">
-        </label>
-        <div class="btn-row">
-            <button onclick="startTournament()">🚀 Mulai Turnamen</button>
-            <button class="hijau" onclick="exportData()">💾 Export Data (JSON)</button>
-            <button class="hijau" onclick="document.getElementById('importFile').click()">📂 Import Data</button>
-            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+    <div class="container">
+        <!-- SETUP -->
+        <div class="card" id="setupArea">
+            <h2>⚙️ Pengaturan</h2>
+            <label style="font-weight:600; font-size:14px;">Total Babak:</label>
+            <input type="number" id="totalRounds" value="5" min="1" max="11" style="max-width:100px;">
+            <div class="btn-group">
+                <button class="btn-primary" onclick="startTournament()">🚀 Mulai Turnamen</button>
+                <button class="btn-outline" onclick="exportData()">💾 Export</button>
+                <button class="btn-outline" onclick="document.getElementById('importFile').click()">📂 Import</button>
+                <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+            </div>
+            <p id="setupStatus" style="color:var(--teks-muda); font-size:0.9em; margin-bottom:0;">Tambahkan pemain dulu, lalu klik Mulai.</p>
         </div>
-        <p class="status-msg" id="setupStatus">Tambahkan pemain dulu, lalu klik Mulai Turnamen.</p>
-    </div>
 
-    <!-- PEMAIN -->
-    <div class="card" id="playerArea">
-        <h2>👥 Daftar Pemain</h2>
-        <div>
+        <!-- PEMAIN -->
+        <div class="card" id="playerArea">
+            <h2>👥 Daftar Pemain</h2>
             <input type="text" id="playerName" placeholder="Nama Pemain" onkeypress="if(event.key==='Enter')addPlayer()">
-            <input type="number" id="playerRating" placeholder="Rating (opsional)" style="width:150px" onkeypress="if(event.key==='Enter')addPlayer()">
-            <button onclick="addPlayer()">➕ Tambah</button>
+            <input type="number" id="playerRating" placeholder="Rating (opsional)" onkeypress="if(event.key==='Enter')addPlayer()">
+            <button class="btn-primary" onclick="addPlayer()" style="width:100%; margin-top:10px;">➕ Tambah Pemain</button>
+            <p style="margin-top:15px;"><b id="playerCount">Total: 0 Pemain</b></p>
+            <ul id="playerList"></ul>
         </div>
-        <p><b id="playerCount">Total: 0 Pemain</b></p>
-        <ul id="playerList"></ul>
-    </div>
 
-    <!-- BABAK -->
-    <div class="card" id="roundArea" style="display:none;">
-        <h2>♟️ Babak <span id="currentRoundNum">1</span> dari <span id="totalRoundsDisplay">5</span></h2>
-        <div class="btn-row">
-            <button id="btnPair" onclick="generatePairings()">🎲 Generate Pairing Babak Ini</button>
-            <button id="btnSaveResults" class="hijau" onclick="saveResults()" style="display:none;">✅ Simpan Hasil & Lanjut</button>
+        <!-- BABAK -->
+        <div class="card" id="roundArea" style="display:none;">
+            <h2>♟️ Babak <span id="currentRoundNum">1</span> <span style="font-size:0.6em; font-weight:normal; color:var(--teks-muda)">dari <span id="totalRoundsDisplay">5</span></span></h2>
+            
+            <div class="btn-group">
+                <button id="btnPair" class="btn-primary" onclick="generatePairings()">🎲 Generate Pairing</button>
+                <button id="btnSaveResults" class="btn-success" onclick="saveResults()" style="display:none;">✅ Simpan & Lanjut</button>
+            </div>
+
+            <!-- Tombol Cetak Pairing -->
+            <button id="btnPrintPairing" class="btn-print" onclick="window.print()" style="display:none; margin-top:15px;">🖨️ Cetak Jadwal Pairing</button>
+
+            <div id="pairingList" style="margin-top:15px;"></div>
         </div>
-        <div id="pairingList"></div>
+
+        <!-- KLASEMEN -->
+        <div class="card" id="standingsArea" style="display:none;">
+            <h2>🏆 Klasemen Sementara</h2>
+            <!-- Tombol Cetak PDF -->
+            <button class="btn-print" onclick="window.print()">🖨️ Cetak PDF / Simpan Gambar</button>
+            <table id="standingsTable">
+                <thead><tr><th>#</th><th>Nama</th><th>Skor</th><th>Papan</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- KLASEMEN -->
-    <div class="card" id="standingsArea" style="display:none;">
-        <h2>🏆 Klasemen Sementara</h2>
-        <table id="standingsTable">
-            <thead>
-                <tr><th>#</th><th>Nama</th><th>Skor</th><th>Rating</th><th>Papan</th></tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <div class="footer">
-        🍅 Turnamen Sambel Kemangi — dibuat untuk panitia turnamen catur lokal 🌿
-    </div>
+    <div class="footer">🍅 Turnamen Sambel Kemangi — Dibuat untuk panitia turnamen catur lokal 🌿</div>
 
     <script>
-        let players = [];
-        let currentRound = 0;
-        let totalRounds = 5;
-        let pairings = [];
-        let tournamentStarted = false;
+        // --- SPLASH SCREEN LOGIC ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 500);
+            }, 1200); 
+        });
 
-        // ====== PEMAIN ======
+        let players = [], currentRound = 0, totalRounds = 5, pairings = [], tournamentStarted = false;
+
         function addPlayer() {
             if (tournamentStarted) return alert("Turnamen sudah dimulai!");
             const name = document.getElementById('playerName').value.trim();
             const rating = parseInt(document.getElementById('playerRating').value) || 0;
             if (!name) return alert("Nama harus diisi.");
-            if (players.some(p => p.name.toLowerCase() === name.toLowerCase()))
-                return alert("Nama pemain sudah ada!");
-
-            players.push({
-                id: players.length + 1,
-                name: name,
-                rating: rating,
-                score: 0,
-                colorBalance: 0,
-                opponents: [],
-                receivedBye: false,
-                whiteCount: 0,
-                blackCount: 0
-            });
+            if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) return alert("Nama sudah ada!");
+            players.push({ id: players.length + 1, name, rating, score: 0, colorBalance: 0, opponents: [], receivedBye: false, whiteCount: 0, blackCount: 0 });
             document.getElementById('playerName').value = '';
             document.getElementById('playerRating').value = '';
             document.getElementById('playerName').focus();
@@ -230,29 +208,21 @@
         }
 
         function removePlayer(id) {
-            if (tournamentStarted) return alert("Tidak bisa hapus pemain setelah turnamen dimulai.");
+            if (tournamentStarted) return alert("Tidak bisa hapus setelah mulai.");
             players = players.filter(p => p.id !== id);
-            // re-index
             players.forEach((p, i) => p.id = i + 1);
             renderPlayerList();
         }
 
         function renderPlayerList() {
-            const list = document.getElementById('playerList');
-            list.innerHTML = players.map(p =>
-                `<li><span>${p.name} <span class="badge">${p.rating || '-'}</span></span>
-                 <button onclick="removePlayer(${p.id})">✕</button></li>`
-            ).join('');
+            document.getElementById('playerList').innerHTML = players.map(p => `<li><span><b>${p.name}</b> <small style="color:#666;">(${p.rating || '-'})</small></span><button onclick="removePlayer(${p.id})">✕</button></li>`).join('');
             document.getElementById('playerCount').innerText = `Total: ${players.length} Pemain`;
         }
 
-        // ====== TURNAMEN ======
         function startTournament() {
-            if (players.length < 2) return alert("Minimal 2 pemain dong, brader!");
+            if (players.length < 2) return alert("Minimal 2 pemain, brader.");
             totalRounds = parseInt(document.getElementById('totalRounds').value);
-            if (totalRounds < 1) return alert("Babak minimal 1.");
-            tournamentStarted = true;
-            currentRound = 0;
+            tournamentStarted = true; currentRound = 0;
             document.getElementById('setupArea').style.display = 'none';
             document.getElementById('playerArea').style.display = 'none';
             document.getElementById('roundArea').style.display = 'block';
@@ -263,197 +233,110 @@
 
         function nextRound() {
             currentRound++;
-            if (currentRound > totalRounds) {
-                document.getElementById('roundArea').style.display = 'none';
-                alert("🍅 Turnamen Sambel Kemangi selesai! Selamat kepada para juara! 🌿");
-                return;
-            }
+            if (currentRound > totalRounds) { document.getElementById('roundArea').style.display = 'none'; alert("🏆 Turnamen Selesai!"); return; }
             document.getElementById('currentRoundNum').innerText = currentRound;
             document.getElementById('btnPair').disabled = false;
+            document.getElementById('btnPair').style.display = 'block';
+            document.getElementById('btnPrintPairing').style.display = 'none'; // Sembunyikan tombol cetak
             document.getElementById('btnSaveResults').style.display = 'none';
             document.getElementById('pairingList').innerHTML = '';
-            pairings = [];
-            updateStandings();
+            pairings = []; updateStandings();
         }
 
-        // ====== PAIRING SWISS ======
         function generatePairings() {
-            let sortedPlayers = [...players].sort((a, b) =>
-                b.score - a.score || b.rating - a.rating || Math.random() - 0.5
-            );
+            let sortedPlayers = [...players].sort((a, b) => b.score - a.score || b.rating - a.rating || Math.random() - 0.5);
+            let used = new Set(); let newPairings = [];
 
-            let used = new Set();
-            let newPairings = [];
-
-            // Bye jika ganjil
             if (sortedPlayers.length % 2 !== 0) {
                 for (let i = sortedPlayers.length - 1; i >= 0; i--) {
                     if (!sortedPlayers[i].receivedBye) {
                         const byePlayer = sortedPlayers[i];
-                        byePlayer.score += 1;
-                        byePlayer.receivedBye = true;
-                        used.add(byePlayer.id);
-                        newPairings.push({ bye: byePlayer });
-                        break;
+                        byePlayer.score += 1; byePlayer.receivedBye = true; used.add(byePlayer.id);
+                        newPairings.push({ bye: byePlayer }); break;
                     }
                 }
             }
 
-            // Pairing
             for (let i = 0; i < sortedPlayers.length; i++) {
-                const p1 = sortedPlayers[i];
-                if (used.has(p1.id)) continue;
-
+                const p1 = sortedPlayers[i]; if (used.has(p1.id)) continue;
                 let opponent = null;
                 for (let j = i + 1; j < sortedPlayers.length; j++) {
                     const p2 = sortedPlayers[j];
-                    if (used.has(p2.id)) continue;
-                    if (p1.opponents.includes(p2.id)) continue;
-                    opponent = p2;
-                    break;
+                    if (used.has(p2.id) || p1.opponents.includes(p2.id)) continue;
+                    opponent = p2; break;
                 }
-
                 if (opponent) {
-                    // Tentukan warna: usahakan seimbang
                     let white, black;
                     const p1NeedWhite = p1.whiteCount < p1.blackCount || (p1.whiteCount === p1.blackCount && p1.colorBalance <= 0);
                     const p2NeedWhite = opponent.whiteCount < opponent.blackCount || (opponent.whiteCount === opponent.blackCount && opponent.colorBalance <= 0);
-
                     if (p1NeedWhite && !p2NeedWhite) { white = p1; black = opponent; }
                     else if (p2NeedWhite && !p1NeedWhite) { white = opponent; black = p1; }
-                    else {
-                        // fallback: rating tinggi = hitam
-                        if (p1.rating >= opponent.rating) { white = opponent; black = p1; }
-                        else { white = p1; black = opponent; }
-                    }
-
-                    newPairings.push({ white, black, result: null });
-                    used.add(p1.id);
-                    used.add(opponent.id);
+                    else { if (p1.rating >= opponent.rating) { white = opponent; black = p1; } else { white = p1; black = opponent; } }
+                    newPairings.push({ white, black, result: null }); used.add(p1.id); used.add(opponent.id);
                 } else {
-                    // Bye darurat jika tak ada lawan baru
-                    if (!p1.receivedBye) {
-                        p1.score += 1;
-                        p1.receivedBye = true;
-                        newPairings.push({ bye: p1 });
-                        used.add(p1.id);
-                    }
+                    if (!p1.receivedBye) { p1.score += 1; p1.receivedBye = true; newPairings.push({ bye: p1 }); used.add(p1.id); }
                 }
             }
 
-            pairings = newPairings;
-            renderPairings();
+            pairings = newPairings; renderPairings();
             document.getElementById('btnPair').disabled = true;
-            document.getElementById('btnSaveResults').style.display = 'inline-block';
+            document.getElementById('btnPair').style.display = 'none';
+            document.getElementById('btnSaveResults').style.display = 'block';
+            document.getElementById('btnPrintPairing').style.display = 'block'; // Munculkan tombol cetak
         }
 
         function renderPairings() {
-            const container = document.getElementById('pairingList');
-            container.innerHTML = pairings.map((p, idx) => {
-                if (p.bye) {
-                    return `<div class="pairing-row bye">
-                        <span>🟢 Bye: <b>${p.bye.name}</b> — Poin otomatis +1</span>
-                    </div>`;
-                }
+            document.getElementById('pairingList').innerHTML = pairings.map((p, idx) => {
+                if (p.bye) return `<div class="pairing-row bye"><span>🟢 <b>Bye:</b> ${p.bye.name} <small>(Poin +1)</small></span></div>`;
                 return `<div class="pairing-row">
-                    <span>
-                        ♔ <b>${p.white.name}</b> (Putih)
-                        <span style="color:var(--merah);font-weight:bold;">vs</span>
-                        ♚ <b>${p.black.name}</b> (Hitam)
-                    </span>
-                    <select class="result-input" data-idx="${idx}" onchange="updateResult(${idx}, this.value)">
-                        <option value="">-- Hasil --</option>
-                        <option value="1">Putih Menang (1-0)</option>
-                        <option value="0.5">Seri (0.5-0.5)</option>
-                        <option value="0">Hitam Menang (0-1)</option>
-                    </select>
-                </div>`;
+                    <span>♔ <b>${p.white.name}</b> <span class="vs">VS</span> ♚ <b>${p.black.name}</b></span>
+                    <select class="result-input" onchange="updateResult(${idx}, this.value)">
+                        <option value="">-- Pilih Hasil --</option>
+                        <option value="1">Putih Menang</option>
+                        <option value="0.5">Seri</option>
+                        <option value="0">Hitam Menang</option>
+                    </select></div>`;
             }).join('');
         }
 
-        function updateResult(idx, val) {
-            if (val === "") pairings[idx].result = null;
-            else pairings[idx].result = parseFloat(val);
-        }
+        function updateResult(idx, val) { pairings[idx].result = val === "" ? null : parseFloat(val); }
 
         function saveResults() {
-            for (let p of pairings) {
-                if (p.bye) continue;
-                if (p.result === null || p.result === undefined) {
-                    return alert("Isi semua hasil dulu, brader!");
-                }
-            }
-
+            for (let p of pairings) { if (!p.bye && (p.result === null || p.result === undefined)) return alert("Isi semua hasil dulu ya!"); }
             for (let p of pairings) {
                 if (p.bye) continue;
                 const w = p.white, b = p.black;
-
-                if (p.result === 1) { w.score += 1; }
-                else if (p.result === 0) { b.score += 1; }
-                else { w.score += 0.5; b.score += 0.5; }
-
-                w.whiteCount += 1; w.colorBalance += 1;
-                b.blackCount += 1; b.colorBalance -= 1;
-
-                w.opponents.push(b.id);
-                b.opponents.push(w.id);
+                if (p.result === 1) w.score += 1; else if (p.result === 0) b.score += 1; else { w.score += 0.5; b.score += 0.5; }
+                w.whiteCount += 1; w.colorBalance += 1; b.blackCount += 1; b.colorBalance -= 1;
+                w.opponents.push(b.id); b.opponents.push(w.id);
             }
-
             updateStandings();
-
-            if (currentRound < totalRounds) {
-                if (confirm(`Hasil Babak ${currentRound} tersimpan 🍅\nLanjut ke Babak ${currentRound + 1}?`)) {
-                    nextRound();
-                } else {
-                    document.getElementById('btnSaveResults').disabled = true;
-                }
-            } else {
-                alert("🍅🌿 Turnamen Sambel Kemangi Selesai! Cek klasemen akhir di bawah.");
-                document.getElementById('btnSaveResults').disabled = true;
-                document.getElementById('btnPair').disabled = true;
-                document.getElementById('btnPair').style.display = 'none';
-            }
+            if (currentRound < totalRounds) { if (confirm(`Lanjut ke Babak ${currentRound + 1}?`)) nextRound(); else document.getElementById('btnSaveResults').disabled = true; }
+            else { alert("🏆 Turnamen Selesai! Cek klasemen akhir."); document.getElementById('btnSaveResults').disabled = true; }
         }
 
         function updateStandings() {
-            const tbody = document.querySelector('#standingsTable tbody');
-            const sorted = [...players].sort((a, b) =>
-                b.score - a.score || b.rating - a.rating
-            );
-            tbody.innerHTML = sorted.map((p, i) => `
+            const sorted = [...players].sort((a, b) => b.score - a.score || b.rating - a.rating);
+            document.querySelector('#standingsTable tbody').innerHTML = sorted.map((p, i) => `
                 <tr>
                     <td>${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}</td>
                     <td><b>${p.name}</b></td>
                     <td><b>${p.score}</b></td>
-                    <td>${p.rating || '-'}</td>
                     <td>${p.whiteCount}⚪ / ${p.blackCount}⚫</td>
-                </tr>
-            `).join('');
+                </tr>`).join('');
         }
 
-        // ====== EXPORT / IMPORT ======
         function exportData() {
-            const data = { players, totalRounds, currentRound, tournamentStarted };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `turnamen-sambel-kemangi-${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
+            const blob = new Blob([JSON.stringify({ players, totalRounds, currentRound, tournamentStarted }, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `sambel-kemangi-backup.json`; a.click();
         }
 
         function importData(e) {
-            const file = e.target.files[0];
-            if (!file) return;
             const reader = new FileReader();
             reader.onload = function(ev) {
                 try {
                     const data = JSON.parse(ev.target.result);
-                    if (!data.players) throw new Error("Format tidak valid");
-                    players = data.players;
-                    totalRounds = data.totalRounds || 5;
-                    currentRound = data.currentRound || 0;
-                    tournamentStarted = data.tournamentStarted || false;
-
+                    players = data.players; totalRounds = data.totalRounds; currentRound = data.currentRound; tournamentStarted = data.tournamentStarted;
                     renderPlayerList();
                     if (tournamentStarted) {
                         document.getElementById('setupArea').style.display = 'none';
@@ -463,17 +346,15 @@
                         document.getElementById('totalRoundsDisplay').innerText = totalRounds;
                         document.getElementById('currentRoundNum').innerText = currentRound;
                         updateStandings();
-                        // Pairing baru harus di-generate ulang per babak
-                        document.getElementById('btnPair').disabled = false;
-                        document.getElementById('btnSaveResults').style.display = 'none';
-                        document.getElementById('pairingList').innerHTML = '<p class="status-msg">Data diimpor. Silakan generate pairing babak ini.</p>';
                     }
                     alert("✅ Data berhasil diimpor!");
-                } catch (err) {
-                    alert("❌ Gagal impor: " + err.message);
-                }
+                } catch (err) { alert("❌ Gagal impor: " + err.message); }
             };
-            reader.readAsText(file);
+            reader.readAsText(e.target.files[0]);
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err)); });
         }
     </script>
 </body>
