@@ -8,9 +8,9 @@
   "description": "Sistem Turnamen Catur Swiss - Pedas, Segar, Adil!",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3306/3306075.png",
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1MzkzNSIgcng9IjIwIi8+PHBhdGggZD0iTTMwIDcwIEw3MCA3MCBMNzAgMzAgTDMwIDMwIFoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNTAgMjAgTDUwIDgwIE0yMCA1MCBMODAgNTAiIHN0cm9rZT0iI2U1MzkzNSIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjE1IiBmaWxsPSIjZTUzOTM1Ii8+PC9zdmc+",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]
