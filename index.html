@@ -96,10 +96,11 @@
 
         /* --- TABEL KLASEMEN --- */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 10px; overflow: hidden; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th, td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; }
         th { background: var(--hijau); color: white; font-weight: 600; }
         tr:nth-child(even) { background: #fafafa; }
         tr:hover td { background: #f0f7f0; }
+        td:nth-child(2) { text-align: left; font-weight: bold; } /* Nama pemain rata kiri */
 
         .footer { text-align: center; color: var(--teks-muda); font-size: 12px; padding: 20px; margin-top: auto; }
 
@@ -117,7 +118,6 @@
 </head>
 <body>
 
-    <!-- SPLASH SCREEN -->
     <div id="splash">
         <div class="loader-catur">♞</div>
         <h2>Menyiapkan Papan...</h2>
@@ -125,7 +125,7 @@
 
     <header>
         <h1>🍅 Turnamen Sambel Kemangi 🌿</h1>
-        <p>Sistem Turnamen Catur Swiss — Pedas, Segar, Adil!</p>
+        <p>Poin: Menang 3, Seri 1, Kalah 0 — Tie-break: Buchholz</p>
     </header>
 
     <div class="container">
@@ -162,7 +162,6 @@
                 <button id="btnSaveResults" class="btn-success" onclick="saveResults()" style="display:none;">✅ Simpan & Lanjut</button>
             </div>
 
-            <!-- Tombol Cetak Pairing -->
             <button id="btnPrintPairing" class="btn-print" onclick="window.print()" style="display:none; margin-top:15px;">🖨️ Cetak Jadwal Pairing</button>
 
             <div id="pairingList" style="margin-top:15px;"></div>
@@ -171,19 +170,24 @@
         <!-- KLASEMEN -->
         <div class="card" id="standingsArea" style="display:none;">
             <h2>🏆 Klasemen Sementara</h2>
-            <!-- Tombol Cetak PDF -->
             <button class="btn-print" onclick="window.print()">🖨️ Cetak PDF / Simpan Gambar</button>
             <table id="standingsTable">
-                <thead><tr><th>#</th><th>Nama</th><th>Skor</th><th>Papan</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th style="text-align:left;">Nama</th>
+                        <th>Poin</th>
+                        <th>Buchholz</th> <!-- Kolom Tie-break Baru -->
+                    </tr>
+                </thead>
                 <tbody></tbody>
             </table>
         </div>
     </div>
 
-    <div class="footer">🍅 Turnamen Sambel Kemangi — Dibuat untuk panitia turnamen catur lokal 🌿</div>
+    <div class="footer">🍅 Turnamen Sambel Kemangi — Sistem Poin 3-1-0 & Buchholz 🌿</div>
 
     <script>
-        // --- SPLASH SCREEN LOGIC ---
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash');
@@ -200,7 +204,9 @@
             const rating = parseInt(document.getElementById('playerRating').value) || 0;
             if (!name) return alert("Nama harus diisi.");
             if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) return alert("Nama sudah ada!");
-            players.push({ id: players.length + 1, name, rating, score: 0, colorBalance: 0, opponents: [], receivedBye: false, whiteCount: 0, blackCount: 0 });
+            
+            // Skor awal 0
+            players.push({ id: players.length + 1, name, rating, score: 0, buchholz: 0, colorBalance: 0, opponents: [], receivedBye: false, whiteCount: 0, blackCount: 0 });
             document.getElementById('playerName').value = '';
             document.getElementById('playerRating').value = '';
             document.getElementById('playerName').focus();
@@ -237,21 +243,23 @@
             document.getElementById('currentRoundNum').innerText = currentRound;
             document.getElementById('btnPair').disabled = false;
             document.getElementById('btnPair').style.display = 'block';
-            document.getElementById('btnPrintPairing').style.display = 'none'; // Sembunyikan tombol cetak
+            document.getElementById('btnPrintPairing').style.display = 'none';
             document.getElementById('btnSaveResults').style.display = 'none';
             document.getElementById('pairingList').innerHTML = '';
             pairings = []; updateStandings();
         }
 
         function generatePairings() {
-            let sortedPlayers = [...players].sort((a, b) => b.score - a.score || b.rating - a.rating || Math.random() - 0.5);
+            // Urutkan: Skor tertinggi, lalu Buchholz tertinggi
+            let sortedPlayers = [...players].sort((a, b) => b.score - a.score || b.buchholz - a.buchholz || Math.random() - 0.5);
             let used = new Set(); let newPairings = [];
 
             if (sortedPlayers.length % 2 !== 0) {
                 for (let i = sortedPlayers.length - 1; i >= 0; i--) {
                     if (!sortedPlayers[i].receivedBye) {
                         const byePlayer = sortedPlayers[i];
-                        byePlayer.score += 1; byePlayer.receivedBye = true; used.add(byePlayer.id);
+                        byePlayer.score += 3; // BYE DAPAT 3 POIN (Setara Menang)
+                        byePlayer.receivedBye = true; used.add(byePlayer.id);
                         newPairings.push({ bye: byePlayer }); break;
                     }
                 }
@@ -274,7 +282,7 @@
                     else { if (p1.rating >= opponent.rating) { white = opponent; black = p1; } else { white = p1; black = opponent; } }
                     newPairings.push({ white, black, result: null }); used.add(p1.id); used.add(opponent.id);
                 } else {
-                    if (!p1.receivedBye) { p1.score += 1; p1.receivedBye = true; newPairings.push({ bye: p1 }); used.add(p1.id); }
+                    if (!p1.receivedBye) { p1.score += 3; p1.receivedBye = true; newPairings.push({ bye: p1 }); used.add(p1.id); }
                 }
             }
 
@@ -282,19 +290,21 @@
             document.getElementById('btnPair').disabled = true;
             document.getElementById('btnPair').style.display = 'none';
             document.getElementById('btnSaveResults').style.display = 'block';
-            document.getElementById('btnPrintPairing').style.display = 'block'; // Munculkan tombol cetak
+            document.getElementById('btnPrintPairing').style.display = 'block';
         }
 
         function renderPairings() {
             document.getElementById('pairingList').innerHTML = pairings.map((p, idx) => {
-                if (p.bye) return `<div class="pairing-row bye"><span>🟢 <b>Bye:</b> ${p.bye.name} <small>(Poin +1)</small></span></div>`;
+                if (p.bye) return `<div class="pairing-row bye"><span>🟢 <b>Bye:</b> ${p.bye.name} <small>(Poin +3)</small></span></div>`;
+                
+                // Dropdown hasil disesuaikan dengan sistem 3-1-0
                 return `<div class="pairing-row">
                     <span>♔ <b>${p.white.name}</b> <span class="vs">VS</span> ♚ <b>${p.black.name}</b></span>
                     <select class="result-input" onchange="updateResult(${idx}, this.value)">
                         <option value="">-- Pilih Hasil --</option>
-                        <option value="1">Putih Menang</option>
-                        <option value="0.5">Seri</option>
-                        <option value="0">Hitam Menang</option>
+                        <option value="1">Putih Menang (3 Poin)</option>
+                        <option value="0.5">Seri (1 Poin)</option>
+                        <option value="0">Hitam Menang (3 Poin)</option>
                     </select></div>`;
             }).join('');
         }
@@ -303,26 +313,52 @@
 
         function saveResults() {
             for (let p of pairings) { if (!p.bye && (p.result === null || p.result === undefined)) return alert("Isi semua hasil dulu ya!"); }
+            
             for (let p of pairings) {
                 if (p.bye) continue;
                 const w = p.white, b = p.black;
-                if (p.result === 1) w.score += 1; else if (p.result === 0) b.score += 1; else { w.score += 0.5; b.score += 0.5; }
+                
+                // Sistem Poin: 3-1-0
+                if (p.result === 1) { w.score += 3; }
+                else if (p.result === 0) { b.score += 3; }
+                else { w.score += 1; b.score += 1; }
+                
                 w.whiteCount += 1; w.colorBalance += 1; b.blackCount += 1; b.colorBalance -= 1;
                 w.opponents.push(b.id); b.opponents.push(w.id);
             }
+
+            hitungBuchholz(); // Hitung Tie-break setelah hasil masuk
             updateStandings();
+
             if (currentRound < totalRounds) { if (confirm(`Lanjut ke Babak ${currentRound + 1}?`)) nextRound(); else document.getElementById('btnSaveResults').disabled = true; }
             else { alert("🏆 Turnamen Selesai! Cek klasemen akhir."); document.getElementById('btnSaveResults').disabled = true; }
         }
 
+        // --- FUNGSI HITUNG BUCHHOLZ ---
+        function hitungBuchholz() {
+            // Reset semua skor buchholz ke 0 dulu
+            players.forEach(p => p.buchholz = 0);
+
+            // Setiap pemain, jumlahkan skor dari semua lawannya
+            players.forEach(p => {
+                let totalLawan = 0;
+                p.opponents.forEach(oppId => {
+                    const lawan = players.find(x => x.id === oppId);
+                    if (lawan) totalLawan += lawan.score;
+                });
+                p.buchholz = totalLawan;
+            });
+        }
+
         function updateStandings() {
-            const sorted = [...players].sort((a, b) => b.score - a.score || b.rating - a.rating);
+            // Sortir: Skor tertinggi, lalu Buchholz tertinggi
+            const sorted = [...players].sort((a, b) => b.score - a.score || b.buchholz - a.buchholz);
             document.querySelector('#standingsTable tbody').innerHTML = sorted.map((p, i) => `
                 <tr>
                     <td>${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}</td>
-                    <td><b>${p.name}</b></td>
-                    <td><b>${p.score}</b></td>
-                    <td>${p.whiteCount}⚪ / ${p.blackCount}⚫</td>
+                    <td>${p.name}</td>
+                    <td style="font-weight:bold; color:var(--merah);">${p.score}</td>
+                    <td style="color:var(--teks-muda);">${p.buchholz}</td>
                 </tr>`).join('');
         }
 
