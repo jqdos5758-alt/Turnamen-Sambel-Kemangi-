@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sambel-kemangi-v2';
+const CACHE_NAME = 'sambel-kemangi-v4';
 const urlsToCache = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', event => {
