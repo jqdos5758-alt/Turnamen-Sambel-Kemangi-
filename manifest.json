@@ -5,13 +5,5 @@
   "display": "standalone",
   "background_color": "#1a1a1a",
   "theme_color": "#c62828",
-  "description": "Sistem Turnamen Catur Swiss & Gugur",
-  "icons": [
-    {
-      "src": "logo.jpg",
-      "sizes": "any",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    }
-  ]
+  "description": "Sistem Turnamen Catur Swiss & Gugur"
 }
