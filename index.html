@@ -10,57 +10,49 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <style>
         :root {
-            --merah: #e53935;
-            --merah-gelap: #b71c1c;
-            --hijau: #2e7d32;
-            --hijau-muda: #e8f5e9;
-            --krem: #fff8e1;
-            --bg: #f4f7f6;
-            --teks: #333;
-            --teks-muda: #666;
+            --merah: #e53935; --merah-gelap: #b71c1c; --hijau: #2e7d32;
+            --hijau-muda: #e8f5e9; --krem: #fff8e1; --bg: #1a1a1a;
+            --teks: #333; --teks-muda: #666;
         }
         
         * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         
         body {
-            margin: 0; padding: 0; background-color: var(--bg); color: var(--teks);
+            margin: 0; padding: 0; background-color: #f4f7f6; color: var(--teks);
             min-height: 100vh; display: flex; flex-direction: column;
         }
 
-        /* --- SPLASH SCREEN ANIMASI --- */
+        /* --- SPLASH SCREEN --- */
         #splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--merah) 0%, var(--merah-gelap) 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #111; display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 9999; transition: opacity 0.5s ease; color: white;
         }
-        .loader-catur {
-            font-size: 60px; animation: bounce 1s infinite alternate; margin-bottom: 20px;
-        }
+        .loader-catur { font-size: 60px; animation: bounce 1s infinite alternate; margin-bottom: 20px; color: var(--merah); }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
         
-        /* --- HEADER & LOGO --- */
+        /* --- HEADER BANNER BARU --- */
         header {
-            text-align: center; padding: 25px 15px;
-            background: linear-gradient(135deg, var(--merah) 0%, var(--merah-gelap) 100%);
-            color: white; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 15px rgba(229,57,53,0.3); margin-bottom: 20px;
-            display: flex; flex-direction: column; align-items: center;
+            text-align: center; padding: 0; position: relative;
+            background-color: #1a1a1a; color: white;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-bottom: 20px; overflow: hidden;
         }
-        /* Logo SVG Kustom di Header */
-        .logo-app {
-            width: 80px; height: 80px; margin-bottom: 10px;
-            background: white; border-radius: 15px; padding: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        .banner-img {
+            width: 100%; height: auto; display: block; object-fit: cover; max-height: 180px;
         }
-        header h1 { margin: 0; font-size: 1.5em; letter-spacing: 1px; }
-        header p { margin: 8px 0 0; font-size: 0.85em; opacity: 0.9; font-weight: 300; }
+        .header-overlay {
+            position: absolute; bottom: 10px; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 10px; text-align: center;
+        }
+        .header-overlay p { margin: 0; font-size: 0.8em; font-weight: bold; color: #ffcc00; text-shadow: 1px 1px 2px black;}
 
         /* --- KARTU & LAYOUT --- */
         .container { max-width: 800px; margin: 0 auto; padding: 0 15px; width: 100%; flex: 1; }
         .card {
             background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--merah);
-            transition: transform 0.2s ease;
         }
         .card h2 { margin-top: 0; color: var(--merah-gelap); font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
 
@@ -70,6 +62,8 @@
             border: 1px solid #ddd; width: 100%; transition: border 0.3s;
         }
         input:focus, select:focus { outline: none; border-color: var(--merah); box-shadow: 0 0 5px rgba(229,57,53,0.2); }
+        .row-input { display: flex; gap: 10px; }
+        .row-input input { flex: 1; }
         
         .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
         button {
@@ -78,18 +72,15 @@
         }
         button:active { transform: scale(0.97); }
         .btn-primary { background: var(--merah); color: white; box-shadow: 0 4px 6px rgba(229,57,53,0.2); }
-        .btn-primary:hover { background: var(--merah-gelap); }
         .btn-success { background: var(--hijau); color: white; box-shadow: 0 4px 6px rgba(46,125,50,0.2); }
-        .btn-success:hover { background: #1b5e20; }
         .btn-outline { background: transparent; border: 2px solid var(--merah); color: var(--merah); }
-        .btn-outline:hover { background: var(--merah); color: white; }
         .btn-print { background: #37474f; color: white; width: 100%; margin-bottom: 15px; border-radius: 8px; border: none; padding: 12px; font-weight: bold; cursor: pointer; }
-        .btn-print:hover { background: #263238; }
 
         /* --- DAFTAR PEMAIN --- */
-        ul#playerList { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        ul#playerList { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 10px; }
         ul#playerList li { background: var(--hijau-muda); padding: 10px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
         ul#playerList li button { background: transparent; color: var(--merah); padding: 0 5px; min-width: auto; font-size: 16px; box-shadow: none; }
+        .klub-tag { background: var(--merah); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 5px; font-weight: normal;}
         
         /* --- PAIRING --- */
         .pairing-row {
@@ -105,18 +96,15 @@
         th, td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; }
         th { background: var(--hijau); color: white; font-weight: 600; }
         tr:nth-child(even) { background: #fafafa; }
-        tr:hover td { background: #f0f7f0; }
-        td:nth-child(2) { text-align: left; font-weight: bold; } /* Nama pemain rata kiri */
+        td:nth-child(2) { text-align: left; font-weight: bold; }
 
         .footer { text-align: center; color: var(--teks-muda); font-size: 12px; padding: 20px; margin-top: auto; }
 
-        /* --- MODE CETAK (PDF / JPG) --- */
+        /* --- MODE CETAK --- */
         @media print {
             body { background: white; color: black; }
-            header { background: none; color: black; border-radius: 0; box-shadow: none; border-bottom: 2px solid black; padding-bottom: 10px; display: block; }
-            .logo-app { display: none; }
+            header, .btn-group, #setupArea, #playerArea, .footer, #btnPair, #btnSaveResults, .btn-print { display: none !important; }
             .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-            .btn-group, #setupArea, #playerArea, .footer, #btnPair, #btnSaveResults, .btn-print { display: none !important; }
             table { border: 1px solid black; }
             th { background: #eee !important; color: black !important; }
             th, td { border-bottom: 1px solid #000; }
@@ -127,82 +115,78 @@
 
     <div id="splash">
         <div class="loader-catur">♞</div>
-        <h2>Menyiapkan Papan...</h2>
+        <h2>Memuat Turnamen...</h2>
     </div>
 
     <header>
-        <!-- LOGO ESTETIK BARU (SVG) -->
-        <svg class="logo-app" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100" height="100" fill="#e53935" rx="20"/>
-            <path d="M30 70 L70 70 L70 30 L30 30 Z" fill="#fff"/>
-            <path d="M50 20 L50 80 M20 50 L80 50" stroke="#e53935" stroke-width="10"/>
-            <circle cx="50" cy="50" r="15" fill="#e53935"/>
-            <!-- Daun Kemangi Kecil -->
-            <path d="M 75 25 Q 85 15 90 30 Q 80 35 75 25 Z" fill="#4caf50"/>
-        </svg>
-
-        <h1>Turnamen Sambel Kemangi</h1>
-        <p>Poin: Menang 3, Seri 1, Kalah 0 — Tie-break: Buchholz</p>
+        <img src="banner.jpg" alt="Banner Turnamen" class="banner-img" onerror="this.style.display='none'">
+        <div class="header-overlay">
+            <p>Swiss (3-1-0 & Buchholz) / Knockout</p>
+        </div>
     </header>
 
     <div class="container">
         <!-- SETUP -->
         <div class="card" id="setupArea">
-            <h2>⚙️ Pengaturan</h2>
-            <label style="font-weight:600; font-size:14px;">Total Babak:</label>
+            <h2>⚙️ Pengaturan Turnamen</h2>
+            
+            <label style="font-weight:600; font-size:14px;">Pilih Sistem:</label>
+            <select id="systemType">
+                <option value="swiss">Sistem Swiss (Poin 3-1-0 & Buchholz)</option>
+                <option value="knockout">Sistem Gugur (Knockout)</option>
+            </select>
+
+            <label style="font-weight:600; font-size:14px; margin-top:10px; display:block;">Total Babak (Khusus Swiss):</label>
             <input type="number" id="totalRounds" value="5" min="1" max="11" style="max-width:100px;">
+
             <div class="btn-group">
                 <button class="btn-primary" onclick="startTournament()">🚀 Mulai Turnamen</button>
                 <button class="btn-outline" onclick="exportData()">💾 Export</button>
                 <button class="btn-outline" onclick="document.getElementById('importFile').click()">📂 Import</button>
                 <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
             </div>
-            <p id="setupStatus" style="color:var(--teks-muda); font-size:0.9em; margin-bottom:0;">Tambahkan pemain dulu, lalu klik Mulai.</p>
         </div>
 
         <!-- PEMAIN -->
         <div class="card" id="playerArea">
-            <h2>👥 Daftar Pemain</h2>
-            <input type="text" id="playerName" placeholder="Nama Pemain" onkeypress="if(event.key==='Enter')addPlayer()">
+            <h2>👥 Daftar Pemain & Klub</h2>
+            <div class="row-input">
+                <input type="text" id="playerName" placeholder="Nama Pemain" onkeypress="if(event.key==='Enter')addPlayer()">
+                <input type="text" id="playerClub" placeholder="Nama Klub" onkeypress="if(event.key==='Enter')addPlayer()">
+            </div>
             <input type="number" id="playerRating" placeholder="Rating (opsional)" onkeypress="if(event.key==='Enter')addPlayer()">
-            <button class="btn-primary" onclick="addPlayer()" style="width:100%; margin-top:10px;">➕ Tambah Pemain</button>
-            <p style="margin-top:15px;"><b id="playerCount">Total: 0 Pemain</b></p>
+            <button class="btn-primary" onclick="addPlayer()" style="width:100%; margin-top:5px;">➕ Tambah Pemain</button>
+            
+            <p style="margin-top:15px; font-size:13px; color:#666;">Tip: Data pemain otomatis tersimpan di HP ini untuk turnamen berikutnya.</p>
+            <p><b id="playerCount">Total: 0 Pemain</b></p>
             <ul id="playerList"></ul>
         </div>
 
-        <!-- BABAK -->
+        <!-- AREA PERTANDINGAN -->
         <div class="card" id="roundArea" style="display:none;">
-            <h2>♟️ Babak <span id="currentRoundNum">1</span> <span style="font-size:0.6em; font-weight:normal; color:var(--teks-muda)">dari <span id="totalRoundsDisplay">5</span></span></h2>
+            <h2 id="roundTitle">♟️ Babak 1</h2>
             
             <div class="btn-group">
                 <button id="btnPair" class="btn-primary" onclick="generatePairings()">🎲 Generate Pairing</button>
                 <button id="btnSaveResults" class="btn-success" onclick="saveResults()" style="display:none;">✅ Simpan & Lanjut</button>
             </div>
 
-            <button id="btnPrintPairing" class="btn-print" onclick="window.print()" style="display:none; margin-top:15px;">🖨️ Cetak Jadwal Pairing</button>
-
+            <button id="btnPrintPairing" class="btn-print" onclick="window.print()" style="display:none; margin-top:15px;">🖨️ Cetak Jadwal</button>
             <div id="pairingList" style="margin-top:15px;"></div>
         </div>
 
         <!-- KLASEMEN -->
         <div class="card" id="standingsArea" style="display:none;">
-            <h2>🏆 Klasemen Sementara</h2>
-            <button class="btn-print" onclick="window.print()">🖨️ Cetak PDF / Simpan Gambar</button>
+            <h2>🏆 Klasemen / Bagan</h2>
+            <button class="btn-print" onclick="window.print()">🖨️ Cetak PDF / Gambar</button>
             <table id="standingsTable">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th style="text-align:left;">Nama</th>
-                        <th>Poin</th>
-                        <th>Buchholz</th>
-                    </tr>
-                </thead>
+                <thead id="tableHead"></thead>
                 <tbody></tbody>
             </table>
         </div>
     </div>
 
-    <div class="footer">🍅 Turnamen Sambel Kemangi — Sistem Poin 3-1-0 & Buchholz 🌿</div>
+    <div class="footer">🍅 Turnamen Sambel Kemangi 🌿</div>
 
     <script>
         window.addEventListener('load', () => {
@@ -210,20 +194,35 @@
                 const splash = document.getElementById('splash');
                 splash.style.opacity = '0';
                 setTimeout(() => splash.style.display = 'none', 500);
+                loadDatabase();
             }, 1200); 
         });
 
         let players = [], currentRound = 0, totalRounds = 5, pairings = [], tournamentStarted = false;
+        let currentSystem = 'swiss';
+        let savedDB = JSON.parse(localStorage.getItem('sambelPlayerDB')) || [];
+
+        function saveDatabase() { localStorage.setItem('sambelPlayerDB', JSON.stringify(savedDB)); }
 
         function addPlayer() {
             if (tournamentStarted) return alert("Turnamen sudah dimulai!");
             const name = document.getElementById('playerName').value.trim();
+            const club = document.getElementById('playerClub').value.trim() || '-';
             const rating = parseInt(document.getElementById('playerRating').value) || 0;
-            if (!name) return alert("Nama harus diisi.");
-            if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) return alert("Nama sudah ada!");
             
-            players.push({ id: players.length + 1, name, rating, score: 0, buchholz: 0, colorBalance: 0, opponents: [], receivedBye: false, whiteCount: 0, blackCount: 0 });
+            if (!name) return alert("Nama harus diisi.");
+            if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) return alert("Nama sudah ada di daftar turnamen ini!");
+            
+            const newPlayer = { id: players.length + 1, name, club, rating, score: 0, buchholz: 0, colorBalance: 0, opponents: [], receivedBye: false, whiteCount: 0, blackCount: 0, eliminated: false };
+            players.push(newPlayer);
+            
+            if (!savedDB.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+                savedDB.push({ name, club, rating });
+                saveDatabase();
+            }
+
             document.getElementById('playerName').value = '';
+            document.getElementById('playerClub').value = '';
             document.getElementById('playerRating').value = '';
             document.getElementById('playerName').focus();
             renderPlayerList();
@@ -237,67 +236,109 @@
         }
 
         function renderPlayerList() {
-            document.getElementById('playerList').innerHTML = players.map(p => `<li><span><b>${p.name}</b> <small style="color:#666;">(${p.rating || '-'})</small></span><button onclick="removePlayer(${p.id})">✕</button></li>`).join('');
+            document.getElementById('playerList').innerHTML = players.map(p => `
+                <li>
+                    <span>
+                        <b>${p.name}</b> <span class="klub-tag">${p.club}</span> 
+                        <small style="color:#666;">${p.rating ? '('+p.rating+')' : ''}</small>
+                    </span>
+                    <button onclick="removePlayer(${p.id})">✕</button>
+                </li>`).join('');
             document.getElementById('playerCount').innerText = `Total: ${players.length} Pemain`;
         }
 
         function startTournament() {
             if (players.length < 2) return alert("Minimal 2 pemain, brader.");
+            currentSystem = document.getElementById('systemType').value;
             totalRounds = parseInt(document.getElementById('totalRounds').value);
+            
+            if (currentSystem === 'knockout') {
+                totalRounds = Math.ceil(Math.log2(players.length));
+                if (players.length % 2 !== 0) return alert("Sistem gugur membutuhkan jumlah pemain genap (pangkat 2).");
+            }
+
             tournamentStarted = true; currentRound = 0;
             document.getElementById('setupArea').style.display = 'none';
             document.getElementById('playerArea').style.display = 'none';
             document.getElementById('roundArea').style.display = 'block';
             document.getElementById('standingsArea').style.display = 'block';
-            document.getElementById('totalRoundsDisplay').innerText = totalRounds;
+            
+            if (currentSystem === 'swiss') {
+                document.getElementById('tableHead').innerHTML = `<tr><th>#</th><th style="text-align:left;">Nama</th><th>Poin</th><th>Buchholz</th></tr>`;
+            } else {
+                document.getElementById('tableHead').innerHTML = `<tr><th>#</th><th style="text-align:left;">Nama</th><th>Status</th></tr>`;
+            }
+
             nextRound();
         }
 
         function nextRound() {
             currentRound++;
-            if (currentRound > totalRounds) { document.getElementById('roundArea').style.display = 'none'; alert("🏆 Turnamen Selesai!"); return; }
-            document.getElementById('currentRoundNum').innerText = currentRound;
+            
+            if (currentSystem === 'knockout') {
+                const activePlayers = players.filter(p => !p.eliminated);
+                if (activePlayers.length <= 1) {
+                    document.getElementById('roundArea').style.display = 'none';
+                    updateStandings();
+                    return alert("🏆 Turnamen Sistem Gugur Selesai! Cek Juara.");
+                }
+            } else {
+                if (currentRound > totalRounds) { document.getElementById('roundArea').style.display = 'none'; alert("🏆 Turnamen Selesai!"); return; }
+            }
+
+            document.getElementById('roundTitle').innerText = `♟️ Babak ${currentRound} (${currentSystem === 'swiss' ? 'Swiss' : 'Gugur'})`;
             document.getElementById('btnPair').disabled = false;
             document.getElementById('btnPair').style.display = 'block';
             document.getElementById('btnPrintPairing').style.display = 'none';
             document.getElementById('btnSaveResults').style.display = 'none';
             document.getElementById('pairingList').innerHTML = '';
-            pairings = []; updateStandings();
+            pairings = []; 
+            if(currentSystem === 'swiss') updateStandings();
         }
 
         function generatePairings() {
-            let sortedPlayers = [...players].sort((a, b) => b.score - a.score || b.buchholz - a.buchholz || Math.random() - 0.5);
-            let used = new Set(); let newPairings = [];
+            let newPairings = [];
+            
+            if (currentSystem === 'knockout') {
+                let activePlayers = players.filter(p => !p.eliminated).sort((a,b) => b.score - a.score || b.rating - a.rating);
+                if(activePlayers.length % 2 !== 0) return alert("Jumlah pemain aktif ganjil, tidak bisa pairing gugur.");
+                
+                for (let i = 0; i < activePlayers.length; i += 2) {
+                    newPairings.push({ white: activePlayers[i], black: activePlayers[i+1], result: null });
+                }
+            } else {
+                let sortedPlayers = [...players].sort((a, b) => b.score - a.score || b.buchholz - a.buchholz || Math.random() - 0.5);
+                let used = new Set();
 
-            if (sortedPlayers.length % 2 !== 0) {
-                for (let i = sortedPlayers.length - 1; i >= 0; i--) {
-                    if (!sortedPlayers[i].receivedBye) {
-                        const byePlayer = sortedPlayers[i];
-                        byePlayer.score += 3;
-                        byePlayer.receivedBye = true; used.add(byePlayer.id);
-                        newPairings.push({ bye: byePlayer }); break;
+                if (sortedPlayers.length % 2 !== 0) {
+                    for (let i = sortedPlayers.length - 1; i >= 0; i--) {
+                        if (!sortedPlayers[i].receivedBye) {
+                            const byePlayer = sortedPlayers[i];
+                            byePlayer.score += 3; byePlayer.receivedBye = true; used.add(byePlayer.id);
+                            newPairings.push({ bye: byePlayer }); break;
+                        }
                     }
                 }
-            }
 
-            for (let i = 0; i < sortedPlayers.length; i++) {
-                const p1 = sortedPlayers[i]; if (used.has(p1.id)) continue;
-                let opponent = null;
-                for (let j = i + 1; j < sortedPlayers.length; j++) {
-                    const p2 = sortedPlayers[j];
-                    if (used.has(p2.id) || p1.opponents.includes(p2.id)) continue;
-                    opponent = p2; break;
-                }
-                if (opponent) {
-                    let white, black;
-                    const p1NeedWhite = p1.whiteCount < p1.blackCount || (p1.whiteCount === p1.blackCount && p1.colorBalance <= 0);
-                    const p2NeedWhite = opponent.whiteCount < opponent.blackCount || (opponent.whiteCount === opponent.blackCount && opponent.colorBalance <= 0);
-                    if (p1NeedWhite && !p2NeedWhite) { white = p1; black = opponent; }
-                    else if (p2NeedWhite && !p1NeedWhite) { white = opponent; black = p1; }
-                    else { if (p1.rating >= opponent.rating) { white = opponent; black = p1; } else { white = p1; black = opponent; } }
-                    newPairings.push({ white, black, result: null }); used.add(p1.id); used.add(opponent.id);
-                } else {
-                    if (!p1.receivedBye) { p1.score += 3; p1.receivedBye = true; newPairings.push({ bye: p1 }); used.add(p1.id); }
+                for (let i = 0; i < sortedPlayers.length; i++) {
+                    const p1 = sortedPlayers[i]; if (used.has(p1.id)) continue;
+                    let opponent = null;
+                    for (let j = i + 1; j < sortedPlayers.length; j++) {
+                        const p2 = sortedPlayers[j];
+                        if (used.has(p2.id) || p1.opponents.includes(p2.id)) continue;
+                        opponent = p2; break;
+                    }
+                    if (opponent) {
+                        let white, black;
+                        const p1NeedWhite = p1.whiteCount < p1.blackCount || (p1.whiteCount === p1.blackCount && p1.colorBalance <= 0);
+                        const p2NeedWhite = opponent.whiteCount < opponent.blackCount || (opponent.whiteCount === opponent.blackCount && opponent.colorBalance <= 0);
+                        if (p1NeedWhite && !p2NeedWhite) { white = p1; black = opponent; }
+                        else if (p2NeedWhite && !p1NeedWhite) { white = opponent; black = p1; }
+                        else { if (p1.rating >= opponent.rating) { white = opponent; black = p1; } else { white = p1; black = opponent; } }
+                        newPairings.push({ white, black, result: null }); used.add(p1.id); used.add(opponent.id);
+                    } else {
+                        if (!p1.receivedBye) { p1.score += 3; p1.receivedBye = true; newPairings.push({ bye: p1 }); used.add(p1.id); }
+                    }
                 }
             }
 
@@ -312,12 +353,12 @@
             document.getElementById('pairingList').innerHTML = pairings.map((p, idx) => {
                 if (p.bye) return `<div class="pairing-row bye"><span>🟢 <b>Bye:</b> ${p.bye.name} <small>(Poin +3)</small></span></div>`;
                 return `<div class="pairing-row">
-                    <span>♔ <b>${p.white.name}</b> <span class="vs">VS</span> ♚ <b>${p.black.name}</b></span>
+                    <span>♔ <b>${p.white.name}</b> <small class="klub-tag">${p.white.club}</small> <span class="vs">VS</span> ♚ <b>${p.black.name}</b> <small class="klub-tag">${p.black.club}</small></span>
                     <select class="result-input" onchange="updateResult(${idx}, this.value)">
-                        <option value="">-- Pilih Hasil --</option>
-                        <option value="1">Putih Menang (3 Poin)</option>
-                        <option value="0.5">Seri (1 Poin)</option>
-                        <option value="0">Hitam Menang (3 Poin)</option>
+                        <option value="">-- Hasil --</option>
+                        <option value="1">Putih Menang</option>
+                        <option value="0.5">Seri (Khusus Swiss)</option>
+                        <option value="0">Hitam Menang</option>
                     </select></div>`;
             }).join('');
         }
@@ -326,19 +367,34 @@
 
         function saveResults() {
             for (let p of pairings) { if (!p.bye && (p.result === null || p.result === undefined)) return alert("Isi semua hasil dulu ya!"); }
+            
             for (let p of pairings) {
                 if (p.bye) continue;
                 const w = p.white, b = p.black;
-                if (p.result === 1) { w.score += 3; }
-                else if (p.result === 0) { b.score += 3; }
-                else { w.score += 1; b.score += 1; }
+                
+                if (currentSystem === 'swiss') {
+                    if (p.result === 1) { w.score += 3; }
+                    else if (p.result === 0) { b.score += 3; }
+                    else { w.score += 1; b.score += 1; }
+                } else {
+                    if (p.result === 1) { b.eliminated = true; w.score += 3; }
+                    else if (p.result === 0) { w.eliminated = true; b.score += 3; }
+                    else { b.eliminated = true; w.score += 3; }
+                }
+                
                 w.whiteCount += 1; w.colorBalance += 1; b.blackCount += 1; b.colorBalance -= 1;
                 w.opponents.push(b.id); b.opponents.push(w.id);
             }
-            hitungBuchholz();
-            updateStandings();
-            if (currentRound < totalRounds) { if (confirm(`Lanjut ke Babak ${currentRound + 1}?`)) nextRound(); else document.getElementById('btnSaveResults').disabled = true; }
-            else { alert("🏆 Turnamen Selesai! Cek klasemen akhir."); document.getElementById('btnSaveResults').disabled = true; }
+
+            if (currentSystem === 'swiss') {
+                hitungBuchholz();
+                updateStandings();
+                if (currentRound < totalRounds) { if (confirm(`Lanjut ke Babak ${currentRound + 1}?`)) nextRound(); else document.getElementById('btnSaveResults').disabled = true; }
+                else { alert("🏆 Turnamen Swiss Selesai!"); document.getElementById('btnSaveResults').disabled = true; }
+            } else {
+                updateStandings();
+                if (confirm(`Lanjut ke Babak Gugur berikutnya?`)) nextRound();
+            }
         }
 
         function hitungBuchholz() {
@@ -354,18 +410,30 @@
         }
 
         function updateStandings() {
-            const sorted = [...players].sort((a, b) => b.score - a.score || b.buchholz - a.buchholz);
-            document.querySelector('#standingsTable tbody').innerHTML = sorted.map((p, i) => `
-                <tr>
-                    <td>${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}</td>
-                    <td>${p.name}</td>
-                    <td style="font-weight:bold; color:var(--merah);">${p.score}</td>
-                    <td style="color:var(--teks-muda);">${p.buchholz}</td>
-                </tr>`).join('');
+            const tbody = document.querySelector('#standingsTable tbody');
+            
+            if (currentSystem === 'swiss') {
+                const sorted = [...players].sort((a, b) => b.score - a.score || b.buchholz - a.buchholz);
+                tbody.innerHTML = sorted.map((p, i) => `
+                    <tr>
+                        <td>${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}</td>
+                        <td>${p.name} <br><small class="klub-tag">${p.club}</small></td>
+                        <td style="font-weight:bold; color:var(--merah);">${p.score}</td>
+                        <td style="color:var(--teks-muda);">${p.buchholz}</td>
+                    </tr>`).join('');
+            } else {
+                const sorted = [...players].sort((a, b) => a.eliminated - b.eliminated || b.score - a.score);
+                tbody.innerHTML = sorted.map((p, i) => `
+                    <tr style="${p.eliminated ? 'opacity:0.5;' : ''}">
+                        <td>${i + 1}</td>
+                        <td>${p.name} <br><small class="klub-tag">${p.club}</small></td>
+                        <td>${p.eliminated ? '❌ Gugur' : '✅ Lolos'}</td>
+                    </tr>`).join('');
+            }
         }
 
         function exportData() {
-            const blob = new Blob([JSON.stringify({ players, totalRounds, currentRound, tournamentStarted }, null, 2)], { type: 'application/json' });
+            const blob = new Blob([JSON.stringify({ players, totalRounds, currentRound, tournamentStarted, currentSystem }, null, 2)], { type: 'application/json' });
             const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `sambel-kemangi-backup.json`; a.click();
         }
 
@@ -375,14 +443,16 @@
                 try {
                     const data = JSON.parse(ev.target.result);
                     players = data.players; totalRounds = data.totalRounds; currentRound = data.currentRound; tournamentStarted = data.tournamentStarted;
+                    currentSystem = data.currentSystem || 'swiss';
+                    document.getElementById('systemType').value = currentSystem;
+                    
                     renderPlayerList();
                     if (tournamentStarted) {
                         document.getElementById('setupArea').style.display = 'none';
                         document.getElementById('playerArea').style.display = 'none';
                         document.getElementById('roundArea').style.display = 'block';
                         document.getElementById('standingsArea').style.display = 'block';
-                        document.getElementById('totalRoundsDisplay').innerText = totalRounds;
-                        document.getElementById('currentRoundNum').innerText = currentRound;
+                        document.getElementById('roundTitle').innerText = `♟️ Babak ${currentRound} (${currentSystem})`;
                         updateStandings();
                     }
                     alert("✅ Data berhasil diimpor!");
